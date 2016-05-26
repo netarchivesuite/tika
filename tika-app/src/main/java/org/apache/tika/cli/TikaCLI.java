@@ -84,6 +84,7 @@ import org.apache.tika.fork.ForkParser;
 import org.apache.tika.gui.TikaGUI;
 import org.apache.tika.io.TikaInputStream;
 import org.apache.tika.language.detect.LanguageHandler;
+import org.apache.tika.language.detect.LanguageResult;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.serialization.JsonMetadata;
 import org.apache.tika.metadata.serialization.JsonMetadataList;
@@ -285,7 +286,10 @@ public class TikaCLI {
                 new PrintWriter(getOutputWriter(output, encoding));
             return new LanguageHandler() {
                 public void endDocument() {
-                    writer.println(getLanguage().getLanguage());
+                	LanguageResult result = getLanguage();
+                	String output = result.getLanguage() + " (" + result.getConfidence() + ", " + result.getRawScore() 
+                			+ ")";
+                    writer.println(output);
                     writer.flush();
                 }
             };
